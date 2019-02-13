@@ -36,6 +36,7 @@ import eu.openanalytics.containerproxy.auth.impl.OpenIDAuthenticationBackend;
 import eu.openanalytics.containerproxy.auth.impl.SimpleAuthenticationBackend;
 import eu.openanalytics.containerproxy.auth.impl.SocialAuthenticationBackend;
 import eu.openanalytics.containerproxy.auth.impl.WebServiceAuthenticationBackend;
+import eu.openanalytics.containerproxy.auth.impl.TanAuthenticationBackend;
 
 /**
  * Instantiates an appropriate authentication backend depending on the application configuration.
@@ -87,6 +88,9 @@ public class AuthenticationBackendFactory extends AbstractFactoryBean<IAuthentic
 			break;
 		case WebServiceAuthenticationBackend.NAME:			
 			backend = new WebServiceAuthenticationBackend();
+			break;
+		case TanAuthenticationBackend.NAME:			
+			backend = new TanAuthenticationBackend();
 			break;
 		}
 		if (backend == null) throw new RuntimeException("Unknown authentication type:" + type);

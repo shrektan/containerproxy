@@ -33,11 +33,11 @@
 			<url>http://nexus.openanalytics.eu/nexus/content/repositories/releases</url>
 		</repository>
 	</distributionManagement>
-
+	
 	<repositories>
 		<repository>
 			<id>clojars</id>
-			<url>http://clojars.org/repo/</url>
+			<url>https://mirror.tuna.tsinghua.edu.cn/clojars/</url>
 		</repository>
 	</repositories>
 

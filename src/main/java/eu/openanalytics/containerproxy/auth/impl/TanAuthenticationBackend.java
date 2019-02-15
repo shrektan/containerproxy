@@ -78,7 +78,14 @@ public class TanAuthenticationBackend implements IAuthenticationBackend {
 	public void configureHttpSecurity(HttpSecurity http) throws Exception {
 		// Nothing to do.
 	}
-
+	
+	@Override
+	public String getLogoutSuccessURL() {
+		String logoutURL = environment.getProperty("proxy.tan.logout-url");
+		if (logoutURL == null || logoutURL.trim().isEmpty()) logoutURL = IAuthenticationBackend.super.getLogoutSuccessURL();
+		return logoutURL;
+	}
+	
 	@Override
 	public void configureAuthenticationManagerBuilder(AuthenticationManagerBuilder auth) throws Exception {
 		RemoteAuthenticationProvider authenticationProvider = new RemoteAuthenticationProvider();

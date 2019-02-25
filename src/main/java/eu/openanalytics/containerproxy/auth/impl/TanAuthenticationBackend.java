@@ -22,6 +22,8 @@ package eu.openanalytics.containerproxy.auth.impl;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.ArrayList;
 import java.util.Base64;
 
@@ -38,6 +40,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.rcp.RemoteAuthenticationException;
@@ -86,6 +89,24 @@ public class TanAuthenticationBackend implements IAuthenticationBackend {
 		return logoutURL;
 	}
 	
+	private static final String ENV_USER_INFO = "SHINYPROXY_GCAMC_USER_INFO";
+
+	@Override
+	public void customizeContainerEnv(List<String> env) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth == null) return;
+		// copied from UserService.getGroups()
+		List<String> groups = new ArrayList<>();
+		for (GrantedAuthority grantedAuth: auth.getAuthorities()) {
+			String authName = grantedAuth.getAuthority();
+			groups.add(authName);
+		}
+		String[] groupsArray = groups.toArray(new String[groups.size()]);
+		String envValue = Arrays.stream(groupsArray).collect(Collectors.joining("|"));
+		env.add(ENV_USER_INFO + "=" + envValue);
+	}
+
+
 	@Override
 	public void configureAuthenticationManagerBuilder(AuthenticationManagerBuilder auth) throws Exception {
 		RemoteAuthenticationProvider authenticationProvider = new RemoteAuthenticationProvider();

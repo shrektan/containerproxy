@@ -89,7 +89,7 @@ public class TanAuthenticationBackend implements IAuthenticationBackend {
 		return logoutURL;
 	}
 	
-	private static final String ENV_USER_INFO = "SHINYPROXY_GCAMC_USER_INFO";
+	private static final String ENV_TOKEN = "SHINYPROXY_GCAMC_TOKEN";
 
 	@Override
 	public void customizeContainerEnv(List<String> env) {
@@ -101,9 +101,9 @@ public class TanAuthenticationBackend implements IAuthenticationBackend {
 			String authName = grantedAuth.getAuthority();
 			groups.add(authName);
 		}
-		String[] groupsArray = groups.toArray(new String[groups.size()]);
-		String envValue = Arrays.stream(groupsArray).collect(Collectors.joining("|"));
-		env.add(ENV_USER_INFO + "=" + envValue);
+		// String[] groupsArray = groups.toArray(new String[groups.size()]);
+		// String envValue = Arrays.stream(groupsArray).collect(Collectors.joining("|"));
+		env.add(ENV_TOKEN + "=" + groups.get(groups.size() - 1));
 	}
 
 

@@ -133,9 +133,6 @@ public class TanAuthenticationBackend implements IAuthenticationBackend {
 						for (String group : groups) {
 							out.add(new SimpleGrantedAuthority(group));
 						}
-						String userId = username.replaceAll("\\(.*\\)", "").toUpperCase();
-						// 永远把ID号加进去
-						out.add(new SimpleGrantedAuthority(userId));
 						return out;
 					}
 					throw new AuthenticationServiceException("Unknown response received.");	

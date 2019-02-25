@@ -101,6 +101,12 @@ public class TanAuthenticationBackend implements IAuthenticationBackend {
 						// 把GROUP加进去
 						// password就是token，目前就是GROUP信息
 						String groupString = StringUtils.newStringUtf8(Base64.getDecoder().decode(token));
+						try {
+							groupString = java.net.URLDecoder.decode(groupString, "UTF-8");
+						}  catch (java.io.UnsupportedEncodingException e) {
+							// UTF-8 is not going to be unsupported...
+							e.printStackTrace();
+						}
 						String[] groups = groupString.split("\\|");
 						ArrayList<GrantedAuthority> out = new ArrayList<>();
 						for (String group : groups) {
